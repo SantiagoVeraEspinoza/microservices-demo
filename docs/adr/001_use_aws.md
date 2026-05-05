@@ -1,24 +1,29 @@
-# ADR-001: Use AWS
+# ADR-001: Use GCP
 
-Status: Pending
+Status: Accepted
 
 ## Context:
-Need target cloud provider.
+Need a target cloud provider to deploy the Online Boutique microservices application, collect performance metrics, and automate the infrastructure lifecycle.
+
+The selected provider should reduce setup complexity, support Kubernetes and gRPC workloads natively, integrate well with observability tooling, and allow fast iteration within the challenge time constraints.
 
 ## Decision:
-Use AWS.
+Use GCP as the target cloud provider, with GKE as the managed Kubernetes platform.
 
 ## Consequences:
+
 ### Positive
-- Mature cloud ecosystem with strong infrastructure primitives.
-- Production-grade managed Kubernetes through EKS.
-- Strong Terraform integration for infrastructure automation.
-- Better visibility into infrastructure components and DevOps practices.
-- Flexible monitoring integrations (CloudWatch, Prometheus, Grafana).
+- Strong native compatibility with the Online Boutique reference implementation.
+- Faster Kubernetes provisioning through GKE.
+- Lower operational overhead due to managed control plane abstractions.
+- Better alignment with Google-originated tooling and documentation.
+- Strong Terraform provider support for infrastructure automation.
+- Native integration with Cloud Monitoring and Logging.
+- Better support for gRPC workloads and HTTP/2 load balancing.
 
 ### Negative
-- Higher operational complexity than more opinionated Kubernetes platforms.
-- Increased configuration surface (IAM, networking, node groups).
-- Less predictable cost structure.
-- Potential vendor lock-in through AWS-native integrations.
-- Longer setup and troubleshooting cycles.
+- Partial vendor lock-in through GCP-native integrations.
+- Less infrastructure-level exposure compared to AWS (more abstraction, less control).
+- Potential cost growth if resources are not cleaned up properly.
+- Reduced cloud-provider portability if architecture depends heavily on GKE-specific features.
+- Requires learning GCP-specific IAM and networking concepts if unfamiliar.

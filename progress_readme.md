@@ -33,7 +33,7 @@ Screenshots, URLs, logs.
 - [Progress log](docs/progress_log.md).
 
 ### Architecture Design Records
-- [Why AWS?](docs/adr/001_use_aws.md).
+- [Why GCP?](docs/adr/001_use_gcp.md).
 
 ## Tradeoffs
 What was simplified and why.
