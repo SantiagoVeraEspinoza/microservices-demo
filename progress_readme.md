@@ -28,6 +28,7 @@ Link to AI agent SDD.
 ## Evidence
 Screenshots, URLs, logs.
 ### Screenshots
+- First run: ![First run proof](./docs/img/evidence/01_first_run.jfif)
 
 ### Progress Logs
 - [Progress log](docs/progress_log.md).

@@ -71,8 +71,7 @@ Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
 4. Create a GKE cluster and get the credentials for it.
 
    ```sh
-   gcloud container clusters create-auto online-boutique \
-     --project=${PROJECT_ID} --region=${REGION}
+   gcloud container clusters create online-boutique   --project=${PROJECT_ID}   --region=${REGION}   --machine-type=e2-medium   --num-nodes=1   --disk-size=20   --disk-type=pd-standard
    ```
 
    Creating the cluster may take a few minutes.
