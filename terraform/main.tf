@@ -40,61 +40,106 @@ module "enable_google_apis" {
 resource "google_container_cluster" "my_cluster" {
 
   name     = var.name
-  location = var.region
+  location = var.zone
 
-  # Enable autopilot for this cluster
-  enable_autopilot = true
-
-  # Set an empty ip_allocation_policy to allow autopilot cluster to spin up correctly
-  ip_allocation_policy {
-  }
-
-  # Avoid setting deletion_protection to false
-  # until you're ready (and certain you want) to destroy the cluster.
-  # deletion_protection = false
+  deletion_protection = false
+  remove_default_node_pool = true
+  initial_node_count       = 1
 
   depends_on = [
     module.enable_google_apis
   ]
 }
 
-# Get credentials for cluster
-module "gcloud" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 4.0"
-
-  platform              = "linux"
-  additional_components = ["kubectl", "beta"]
-
-  create_cmd_entrypoint = "gcloud"
-  # Module does not support explicit dependency
-  # Enforce implicit dependency through use of local variable
-  create_cmd_body = "container clusters get-credentials ${local.cluster_name} --zone=${var.region} --project=${var.gcp_project_id}"
+resource "google_service_account" "gke_nodes" {
+  account_id   = "gke-node-sa"
+  display_name = "GKE Node Service Account"
 }
+
+resource "google_project_iam_member" "gke_node_default_role" {
+  project = var.gcp_project_id
+  role    = "roles/container.defaultNodeServiceAccount"
+  member  = "serviceAccount:${google_service_account.gke_nodes.email}"
+}
+
+resource "google_project_iam_member" "gke_node_logging" {
+  project = var.gcp_project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.gke_nodes.email}"
+}
+
+resource "google_project_iam_member" "gke_node_monitoring" {
+  project = var.gcp_project_id
+  role    = "roles/monitoring.metricWriter"
+  member  = "serviceAccount:${google_service_account.gke_nodes.email}"
+}
+
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "primary-node-pool"
+  location   = var.zone
+  cluster    = google_container_cluster.my_cluster.name
+  node_count = var.node_count
+
+  node_config {
+    machine_type = var.machine_type
+    disk_size_gb = 50
+    disk_type    = "pd-standard"
+
+    service_account = google_service_account.gke_nodes.email
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
+
+  depends_on = [
+    google_container_cluster.my_cluster,
+    google_project_iam_member.gke_node_default_role,
+    google_project_iam_member.gke_node_logging,
+    google_project_iam_member.gke_node_monitoring
+  ]
+}
+
+# Get credentials for cluster
+# module "gcloud" {
+#   source  = "terraform-google-modules/gcloud/google"
+#   version = "~> 4.0"
+
+#   platform              = "linux"
+#   additional_components = ["kubectl", "beta"]
+
+#   create_cmd_entrypoint = "gcloud"
+#   # Module does not support explicit dependency
+#   # Enforce implicit dependency through use of local variable
+#   create_cmd_body = "container clusters get-credentials ${local.cluster_name} --zone=${var.region} --project=${var.gcp_project_id}"
+# }
 
 # Apply YAML kubernetes-manifest configurations
-resource "null_resource" "apply_deployment" {
-  provisioner "local-exec" {
-    interpreter = ["bash", "-exc"]
-    command     = "kubectl apply -k ${var.filepath_manifest} -n ${var.namespace}"
-  }
+# resource "null_resource" "apply_deployment" {
+#   provisioner "local-exec" {
+#     interpreter = ["bash", "-exc"]
+#     command     = "kubectl apply -k ${var.filepath_manifest} -n ${var.namespace}"
+#   }
 
-  depends_on = [
-    module.gcloud
-  ]
-}
+#   # depends_on = [
+#   #   module.gcloud
+#   # ]
+#   depends_on = [
+#     google_container_node_pool.primary_nodes
+#   ]
+# }
 
 # Wait condition for all Pods to be ready before finishing
-resource "null_resource" "wait_conditions" {
-  provisioner "local-exec" {
-    interpreter = ["bash", "-exc"]
-    command     = <<-EOT
-    kubectl wait --for=condition=AVAILABLE apiservice/v1beta1.metrics.k8s.io --timeout=180s
-    kubectl wait --for=condition=ready pods --all -n ${var.namespace} --timeout=280s
-    EOT
-  }
+# resource "null_resource" "wait_conditions" {
+#   provisioner "local-exec" {
+#     interpreter = ["bash", "-exc"]
+#     command     = <<-EOT
+#     kubectl wait --for=condition=AVAILABLE apiservice/v1beta1.metrics.k8s.io --timeout=180s
+#     kubectl wait --for=condition=ready pods --all -n ${var.namespace} --timeout=280s
+#     EOT
+#   }
 
-  depends_on = [
-    resource.null_resource.apply_deployment
-  ]
-}
+#   depends_on = [
+#     resource.null_resource.apply_deployment
+#   ]
+# }

@@ -29,6 +29,12 @@ variable "region" {
   default     = "us-central1"
 }
 
+variable "zone" {
+  type        = string
+  description = "Zone of the new GKE cluster"
+  default     = "us-central1-a"
+}
+
 variable "namespace" {
   type        = string
   description = "Kubernetes Namespace in which the Online Boutique resources are to be deployed"
@@ -44,4 +50,16 @@ variable "filepath_manifest" {
 variable "memorystore" {
   type        = bool
   description = "If true, Online Boutique's in-cluster Redis cache will be replaced with a Google Cloud Memorystore Redis cache"
+}
+
+variable "machine_type" {
+  description = "GKE node machine type"
+  type        = string
+  default     = "e2-standard-2"
+}
+
+variable "node_count" {
+  description = "Number of nodes"
+  type        = number
+  default     = 1
 }
