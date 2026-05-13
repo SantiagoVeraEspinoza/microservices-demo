@@ -31,7 +31,11 @@ Next:
 - Created bucket for terraform state
 
 Challenges:
-- Pending
+- Bucket was not getting filled with terraform states
+- Had to create connection to github through servcie users
+- Many access permission for github user were missing
 
 Next:
-- Pending
+- Adding option to select the desired machine type
+- Make deploy pipeline replace existing pipeline if already present
+- Add monitoring software on paralel
