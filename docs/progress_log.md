@@ -28,6 +28,7 @@ Next:
 ## Day 3
 - Polished terraform deploy
 - Implemented GitHub actions pipeline to create and destroy deployments
+- Created bucket for terraform state
 
 Challenges:
 - Pending

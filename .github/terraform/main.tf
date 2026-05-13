@@ -22,10 +22,9 @@ provider "google" {
 }
 
 terraform {
-  # Store the state inside a Google Cloud Storage bucket.
   backend "gcs" {
-    bucket = "cicd-terraform-state"
-    prefix = "terraform-state"
+    bucket = "online-boutique-tf-state"
+    prefix = "terraform/state"
   }
 }
 
@@ -45,7 +44,7 @@ module "enable_google_apis" {
 
 # Google Cloud Storage for storing Terraform state (.tfstate).
 resource "google_storage_bucket" "terraform_state_storage_bucket" {
-  name                        = "cicd-terraform-state"
+  name                        = "online-boutique-tf-state"
   location                    = "us"
   storage_class               = "STANDARD"
   force_destroy               = false
