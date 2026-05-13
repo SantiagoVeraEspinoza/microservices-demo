@@ -24,12 +24,20 @@ jobs:
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Enable required GCP APIs (critical bootstrap step)
+        run: |
+          gcloud services enable cloudresourcemanager.googleapis.com
+          gcloud services enable iam.googleapis.com
+          gcloud services enable container.googleapis.com
+          gcloud services enable monitoring.googleapis.com
+          gcloud services enable logging.googleapis.com
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
         working-directory: terraform
-        run: terraform init
+        run: terraform init -reconfigure
 
       - name: Terraform Destroy
         working-directory: terraform
