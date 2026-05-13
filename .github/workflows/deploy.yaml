@@ -2,6 +2,11 @@ name: Deploy Infrastructure and App
 
 on:
   workflow_dispatch:
+    inputs:
+      machine_type:
+        description: "GKE machine type"
+        required: true
+        default: "e2-standard-2"
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -42,6 +47,8 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
+        env:
+          TF_VAR_machine_type: ${{ inputs.machine_type }}
         run: terraform apply -auto-approve
 
       - name: Get GKE Credentials
