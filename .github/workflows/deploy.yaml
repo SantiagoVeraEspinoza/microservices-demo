@@ -43,13 +43,21 @@ jobs:
 
       - name: Terraform Init
         working-directory: terraform
-        run: terraform init
+        run: terraform init -reconfigure
+
+      - name: Terraform Destroy
+        working-directory: terraform
+        run: terraform destroy -auto-approve
+        env:
+          TF_VAR_machine_type: ${{ inputs.machine_type }}
+          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Terraform Apply
         working-directory: terraform
+        run: terraform apply -auto-approve
         env:
           TF_VAR_machine_type: ${{ inputs.machine_type }}
-        run: terraform apply -auto-approve
+          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Get GKE Credentials
         run: |
