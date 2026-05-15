@@ -1,0 +1,11 @@
+grafana:
+  adminPassword: admin123
+
+  service:
+    type: LoadBalancer
+
+  defaultDashboardsEnabled: true
+
+prometheus:
+  prometheusSpec:
+    retention: 7d

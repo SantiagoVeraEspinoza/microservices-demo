@@ -68,3 +68,26 @@ jobs:
       - name: Deploy manifests
         run: |
           kubectl apply -f ./release/kubernetes-manifests.yaml
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+
+      - name: Create monitoring namespace
+        run: |
+          kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Add Prometheus Helm repo
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+
+      - name: Deploy monitoring stack
+        run: |
+          helm upgrade --install monitoring \
+            prometheus-community/kube-prometheus-stack \
+            --namespace monitoring \
+            -f release/monitoring/values.yaml
+
+      - name: Show Grafana service
+        run: |
+          kubectl get svc monitoring-grafana -n monitoring
