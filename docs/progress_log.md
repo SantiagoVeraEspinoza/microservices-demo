@@ -29,13 +29,26 @@ Next:
 - Polished terraform deploy
 - Implemented GitHub actions pipeline to create and destroy deployments
 - Created bucket for terraform state
+- Made deploy pipeline replace a previous existing deployment
+- Can choose machine type at dispatch workflow
 
 Challenges:
 - Bucket was not getting filled with terraform states
 - Had to create connection to github through servcie users
 - Many access permission for github user were missing
+- Had to learn how to add parameters to dispatch workflows
 
 Next:
-- Adding option to select the desired machine type
-- Make deploy pipeline replace existing pipeline if already present
 - Add monitoring software on paralel
+
+## Day 4
+- Deployed Grafana and Prometheus on parallel to app
+
+Challenges:
+- Understanding how to connect all components
+- Reworking the source code structure
+
+Next:
+- Add prettier dashboards
+- Create the architecture diagram of automation proposal
+- Create SDD for AI agent

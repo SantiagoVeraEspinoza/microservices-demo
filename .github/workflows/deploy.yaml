@@ -88,6 +88,33 @@ jobs:
             --namespace monitoring \
             -f release/monitoring/values.yaml
 
-      - name: Show Grafana service
+      - name: Show service access
         run: |
-          kubectl get svc monitoring-grafana -n monitoring
+          echo "Waiting for Grafana LoadBalancer IP..."
+          
+          while true; do
+            EXTERNAL_IP=$(kubectl get svc monitoring-grafana -n monitoring -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+            if [ -n "$EXTERNAL_IP" ]; then
+              echo "Grafana available at: http://$EXTERNAL_IP"
+              break
+            fi
+
+            echo "Still waiting..."
+            sleep 30
+          done
+
+          echo ""
+          echo "Waiting for frontend external IP..."
+
+          while true; do
+            FRONTEND_IP=$(kubectl get svc frontend-external -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+            if [ -n "$FRONTEND_IP" ]; then
+              echo "Frontend available at: http://$FRONTEND_IP"
+              break
+            fi
+
+            echo "Still waiting for frontend..."
+            sleep 10
+          done

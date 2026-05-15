@@ -64,7 +64,29 @@ General diagram.
    shippingservice-6ccc89f8fd-v686r         1/1     Running   0          2m58s
    ```
 
-6. Access the web frontend in a browser using the frontend's external IP.
+6. Deploy the monitoring stack (Prometheus + Grafana).
+
+   Create the monitoring namespace:
+
+   ```sh
+   kubectl create namespace monitoring
+   ```
+
+7. Add the Prometheus Helm repository.
+   ```sh
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   ```
+
+8. Deploy kube-prometheus-stack.
+   ```sh
+   helm upgrade --install monitoring \
+   prometheus-community/kube-prometheus-stack \
+   --namespace monitoring \
+   -f release/monitoring/values.yaml
+   ```
+
+9. Access the web frontend in a browser using the frontend's external IP.
 
    ```sh
    kubectl get service frontend-external | awk '{print $4}'
@@ -72,7 +94,21 @@ General diagram.
 
    Visit `http://EXTERNAL_IP` in a web browser to access your instance of Online Boutique.
 
-7. Once you are done with it, delete the GKE cluster.
+10. Access Grafana using the Grafana external IP.
+
+   ```sh
+   kubectl get service monitoring-grafana -n monitoring | awk '{print $4}'
+   ```
+
+   Visit `http://EXTERNAL_IP` in a web browser to access Grafana.
+
+   Default credentials:
+   ```sh
+   Username: admin
+   Password: admin123
+   ```
+
+11. Once you are done with it, delete the GKE cluster.
 
    ```sh
    terraform destroy
@@ -94,6 +130,7 @@ Screenshots, URLs, logs.
 ### Screenshots
 - First run: ![First run proof](./docs/img/evidence/01_first_run.jfif)
 - Got pipelines working: ![Got pipelines working proof](./docs/img/evidence/02_working_pipelines.jpeg)
+- Put Grafana to work: ![Grafana working](./docs/img/evidence/03_grafana_deployed.png)
 
 ### Progress Logs
 - [Progress log](docs/progress_log.md).
