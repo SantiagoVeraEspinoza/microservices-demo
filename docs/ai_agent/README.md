@@ -59,11 +59,17 @@ The orchestration layer is responsible for:
 
 ### Architecture Diagram
 
+![AI Arquitecture](../../docs/img/ai_agent_arquitecture.jpg)
+
 **Component legend:**
-> - **Teal — GKE monitoring namespace:** Prometheus, Alertmanager, Grafana, kube-prometheus-stack, the agent deployment itself.
-> - **Purple — AI interaction:** Webhook receiver, Claude API calls (Phase 1 tool calling, Phase 2 analysis).
-> - **Amber — Notification:** SMTP/SendGrid, ops team inbox.
-> - **Gray — Online Boutique:** The monitored microservices in the `default` namespace.
+> - **Light Green — GKE namespaces (App and Monitoring):** Online Boutique Backend, Prometheus, Alertmanager, Grafana, kube-prometheus-stack and the agent deployment itself.
+> - **Blue — Google Kubernetes Engine Cluster:** Where the pods are allocated.
+> - **Dotted Purple — Google Cloud Platform:** Cloud provider.
+> - **Pink — AI API:** Claude API calls (Phase 1 tool calling, Phase 2 analysis).
+> - **Ivory — Terraform:** Arquitecture level representation of the Terraform intervention.
+> - **Red — Cache:** Cache saving for cart items (Online Boutique).
+> - **Dark Green — GitHub Pipeline:** The pipeline that deploys and destroys the infrastructure.
+> - **Orange — Client-side items:** User interacting or the operations team.
 
 ## Data Flow
 
