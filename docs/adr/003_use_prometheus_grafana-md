@@ -1,0 +1,25 @@
+# ADR-003: Use Prometheus + Grafana for Observability
+
+Status: Accepted
+
+## Context:
+The platform requires visibility into application and cluster performance, including CPU, memory, network, and storage usage at the pod level. A flexible and widely adopted observability stack is needed that integrates well with Kubernetes.
+
+The solution must support dynamic environments and provide query-based exploration of metrics.
+
+## Decision:
+Use Prometheus for metrics collection and Grafana for visualization and dashboards, deployed inside the Kubernetes cluster.
+
+## Consequences:
+
+### Positive
+- Native Kubernetes observability ecosystem support.
+- Grafana provides rich visualization and dashboarding capabilities.
+- Large ecosystem of prebuilt dashboards and exporters.
+- Works well with ephemeral, dynamic workloads.
+
+### Negative
+- Requires proper configuration of exporters to avoid missing metrics.
+- Can become resource-intensive at scale.
+- Dashboard and query tuning may be required for optimal performance.
+- Initial setup complexity compared to managed observability solutions.

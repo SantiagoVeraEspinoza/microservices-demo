@@ -49,6 +49,13 @@ Challenges:
 - Reworking the source code structure
 
 Next:
-- Add prettier dashboards
 - Create the architecture diagram of automation proposal
 - Create SDD for AI agent
+
+## Day 5
+- Polished documentation
+- Created arquitecture diagram for automation
+
+Challenges:
+- Joining all information together
+- Laying down the overall arquitecture
