@@ -56,11 +56,9 @@ Next:
 - Polished documentation
 - Created arquitecture diagram for automation
 - Made base AI Agent arquitecture SDD
+- Finished AI Agent arquitecture diagram
 
 Challenges:
 - Joining all information together
 - Laying down the overall arquitecture
 - Comming up with the whole system design along with all its nuances
-
-Next:
-- Generate main diagrams for SDD
