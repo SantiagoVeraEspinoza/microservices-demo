@@ -3,14 +3,11 @@
 ## Overview
 Deploying and monitoring a cloud-native microservices application manually is slow, error-prone, and hard to reproduce. Every time you need a fresh environment you'd have to provision infrastructure, deploy apps, and set up monitoring by hand.
 
-1. One-button deployment
-A single GitHub Actions workflow trigger provisions the infrastructure with Terraform, deploys the app to GKE, and sets up monitoring — no manual steps.
+1. One-button deployment: A single GitHub Actions workflow trigger provisions the infrastructure with Terraform, deploys the app to GKE, and sets up monitoring — no manual steps.
 
-2. One-button teardown
-The same pipeline can destroy everything cleanly, avoiding unnecessary GCP costs when the environment isn't needed.
+2. One-button teardown: The same pipeline can destroy everything cleanly, avoiding unnecessary GCP costs when the environment isn't needed.
 
-3. Basic metric monitoring
-Prometheus collects metrics from the cluster and pods, Grafana visualizes them — CPU and memory per pod out of the box, so you can see what's happening without digging into logs.
+3. Basic metric monitoring: Prometheus collects metrics from the cluster and pods, Grafana visualizes them — CPU and memory per pod out of the box, so you can see what's happening without digging into logs.
 
 ## Architecture
 ![Automation Arquitecture](./docs/img/automation_arquitecture.jpg)
