@@ -191,7 +191,8 @@ It’s the step that tears down the entire environment created by the pipeline.
 It also helps replacing exiting infrastructure.
 
 ## AI Agent Design
-Link to AI agent SDD.
+
+[AI Agent Arquitecture Diagram](docs/ai_agent/README.md)
 
 ## Evidence
 
