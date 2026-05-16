@@ -188,7 +188,7 @@ It’s the step that tears down the entire environment created by the pipeline.
 - Removes associated cloud networking resources
 - Cleans up everything created during deployment
 
-It also helps replacing exiting infrastructure.
+It also helps replacing existing infrastructure.
 
 ## AI Agent Design
 
